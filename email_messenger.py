@@ -11,7 +11,6 @@ load_dotenv()
 app = Flask(__name__) 
 # creating an API object 
 api = Api(app) 
-mail=Mail(app)
 
 app.config['MAIL_SERVER']=os.environ['MAIL_SERVER']
 app.config['MAIL_PORT']=os.environ['MAIL_PORT']
@@ -20,11 +19,14 @@ app.config['MAIL_PASSWORD']= os.environ['MAIL_PASSWORD']
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
+mail=Mail(app)
+
 class student_invoice_emailer(Resource):
 
     def post(self):
         output=request.get_json()
         output=json.loads(output)
+        print(output)
         msg = Message(
                 "STUDENT INVOICE " + output['action'] +"# "+ output['output']['Invoice No.'],
                 sender =os.environ['SENDER'],
@@ -35,9 +37,9 @@ class student_invoice_emailer(Resource):
         mail.send(msg)
         return jsonify({'message':'email sent'})
     
-api.add_resource(student_invoice_emailer, '/student_invoice_emailer') 
+api.add_resource(student_invoice_emailer, '/') 
 
 if __name__ == '__main__': 
   
-    #app.run(debug = True, host='127.1.1.3', port=8082) #local dev
+    #app.run(debug = True, host='127.1.1.3', port=8080) #local dev
     app.run(debug = True) #cloud run
