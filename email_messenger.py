@@ -37,7 +37,7 @@ class student_invoice_emailer(Resource):
         mail.send(msg)
         return jsonify({'message':'email sent'})
     
-api.add_resource(student_invoice_emailer, '/') 
+api.add_resource(student_invoice_emailer, '/student_invoice_emailer') 
 
 if __name__ == '__main__': 
   
