@@ -22,6 +22,10 @@ app.config['MAIL_USE_SSL'] = True
 
 mail=Mail(app)
 
+class check(Resource):
+    def get(self):
+        return jsonify({'result':'Service is live!'}) 
+
 class student_invoice_emailer(Resource):
 
     def post(self):
@@ -102,14 +106,12 @@ class update_tc_leave_status_emailer(Resource):
         mail.send(msg)
         return jsonify({'message':'email sent'})
 
-
+api.add_resource(check, '/check')
 api.add_resource(student_invoice_emailer, '/student_invoice_emailer') 
 api.add_resource(school_principal_bill_emailer, '/school_principal_bill_emailer') 
 api.add_resource(house_cover_emailer, '/house_cover_emailer') 
 api.add_resource(delete_invoice_emailer, '/delete_invoice_emailer')
 api.add_resource(update_tc_leave_status_emailer, '/update_tc_leave_status_emailer')
-
-
 
 if __name__ == '__main__': 
   
