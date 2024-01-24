@@ -31,10 +31,14 @@ class student_invoice_emailer(Resource):
     def post(self):
         output=request.get_json()
         output=json.loads(output)
-        df_header=pd.DataFrame(output['header'])
-        df_products=pd.DataFrame(output['products'])
+        df_header=json.loads(output['header'])
+        df_header=pd.DataFrame(df_header)
+        df_products=json.loads(output['products'])
+        df_products=pd.DataFrame(df_products)
+        print(df_header)
+        print(df_products)
         msg = Message(
-                "STUDENT INVOICE " + output['action'] +"# "+ output['output']['Invoice No.'],
+                "STUDENT INVOICE # " + df_header['Invoice No.'][0]+ "\t"+output['action'],
                 sender =os.environ['SENDER'],
                 recipients = [os.environ['RECIPIENTS']]
                ) 
@@ -116,5 +120,5 @@ api.add_resource(update_tc_leave_status_emailer, '/update_tc_leave_status_emaile
 
 if __name__ == '__main__': 
   
-    #app.run(debug = True, host='127.1.1.3', port=8080) #local dev
-    app.run(debug = True) #cloud run
+    app.run(debug = True, host='127.1.1.3', port=8080) #local dev
+    #app.run(debug = True) #cloud run

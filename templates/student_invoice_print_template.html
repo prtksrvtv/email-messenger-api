@@ -3,11 +3,7 @@
         <title>{{header['Invoice No.']}}</title>
         <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/BbHwVwx1/logo.png">
         <style>
-        @media print {
-                      #printbtn  {
-                        display: none;
-                        }
-                    } 
+         
          h1 {
            text-align: center;
            display: block;
@@ -49,13 +45,6 @@
             <td>{{ word_amount }}</td></tr>
          </table>
          <br>
-         <img src="https://i.postimg.cc/qMhLmnM8/sig-table.png" width="1000px", height="200px">
-         <br>
-         <br>
-         <input id='printbtn' type = "Submit" value = "Print Invoice" onclick="window.print();return false;window.location.href='/print_invoice';">
-      <form action="/homepage">
-         <br>
-      <input id='printbtn' type="submit" value="Go to Homepage" />
-      </form>          
+         <img src="https://i.postimg.cc/qMhLmnM8/sig-table.png" width="1000px", height="200px">       
       </body>
      </html>
