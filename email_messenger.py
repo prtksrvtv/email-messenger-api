@@ -120,5 +120,5 @@ api.add_resource(update_tc_leave_status_emailer, '/update_tc_leave_status_emaile
 
 if __name__ == '__main__': 
   
-    app.run(debug = True, host='127.1.1.3', port=8080) #local dev
-    #app.run(debug = True) #cloud run
+    #app.run(debug = True, host='127.1.1.3', port=8080) #local dev
+    app.run(debug = True) #cloud run
