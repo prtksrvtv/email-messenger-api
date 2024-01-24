@@ -37,7 +37,7 @@ class student_invoice_emailer(Resource):
                 "STUDENT INVOICE " + output['action'] +"# "+ output['output']['Invoice No.'],
                 sender =os.environ['SENDER'],
                 recipients = [os.environ['RECIPIENTS']]
-               )  
+               ) 
         msg.body = " Please see the details below."
         msg.html = render_template("student_invoice_print_template.html",header=df_header.to_html(classes='data', index=False, justify='center').replace('<th>','<th style = "background-color: rgb(173, 171, 171)">'), products=df_products.to_html(classes='data', index=True, justify='center').replace('<th>','<th style = "background-color: rgb(173, 171, 171)">'), word_amount = output['word_amount'], image=output['img_url'])
         mail.send(msg)
