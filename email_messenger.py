@@ -31,14 +31,15 @@ class student_invoice_emailer(Resource):
     def post(self):
         output=request.get_json()
         output=json.loads(output)
-        print(output)
+        df_header=pd.DataFrame(output['header'])
+        df_products=pd.DataFrame(output['products'])
         msg = Message(
                 "STUDENT INVOICE " + output['action'] +"# "+ output['output']['Invoice No.'],
                 sender =os.environ['SENDER'],
                 recipients = [os.environ['RECIPIENTS']]
                )  
         msg.body = " Please see the details below."
-        msg.html = render_template("student_invoice_print_template.html", output=output['output'], image=output['img_url'])
+        msg.html = render_template("student_invoice_print_template.html",header=df_header.to_html(classes='data', index=False, justify='center').replace('<th>','<th style = "background-color: rgb(173, 171, 171)">'), products=df_products.to_html(classes='data', index=True, justify='center').replace('<th>','<th style = "background-color: rgb(173, 171, 171)">'), word_amount = output['word_amount'], image=output['img_url'])
         mail.send(msg)
         return jsonify({'message':'email sent'})
     
