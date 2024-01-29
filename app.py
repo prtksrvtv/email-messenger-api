@@ -1,7 +1,6 @@
-import json
 import os
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, json
 from flask_restful import Resource, Api
 from flask_mail import Mail, Message
 import pandas as pd
@@ -35,8 +34,6 @@ class student_invoice_emailer(Resource):
         df_header=pd.DataFrame(df_header)
         df_products=json.loads(output['products'])
         df_products=pd.DataFrame(df_products)
-        print(df_header)
-        print(df_products)
         msg = Message(
                 "STUDENT INVOICE # " + df_header['Invoice No.'][0]+ "\t"+output['action'],
                 sender =os.environ['SENDER'],
@@ -167,7 +164,6 @@ class raashan_bill_emailer(Resource):
         msg.body = " Please see the details below."
         msg.html = render_template("print_raashan_bill.html", result=result, image=output['session'])
         mail.send(msg)
-
         return jsonify({'message':'email sent'})        
 
 api.add_resource(check, '/check')
