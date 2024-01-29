@@ -111,12 +111,74 @@ class update_tc_leave_status_emailer(Resource):
         mail.send(msg)
         return jsonify({'message':'email sent'})
 
+class inventory_entry_emailer(Resource):
+
+    def post(self):
+        output=request.get_json()
+        output=json.loads(output)
+        msg = Message(
+                "STOCK INPUT SUCCESSFUL",
+                sender =os.environ['SENDER'],
+                recipients = [os.environ['RECIPIENTS']]
+               )
+        msg.body = output
+        mail.send(msg)
+        return jsonify({'message':'email sent'})
+
+class inventory_view_emailer(Resource):
+
+    def post(self):
+        output=request.get_json()
+        output=json.loads(output)
+        msg = Message(
+                "INVENTORY VIEWED BY USER: "+output['username'],
+                sender =os.environ['SENDER'],
+                recipients = [os.environ['RECIPIENTS']]
+               )
+        msg.body = output['ping']
+        mail.send(msg)
+        return jsonify({'message':'email sent'})  
+
+class inventory_modify_emailer(Resource):
+
+    def post(self):
+        output=request.get_json()
+        output=json.loads(output)
+        msg = Message(
+                "STOCK MODIFY SUCCESSFUL",
+                sender =os.environ['SENDER'],
+                recipients = [os.environ['RECIPIENTS']]
+               )
+        msg.body = output
+        mail.send(msg)
+        return jsonify({'message':'email sent'})
+
+class raashan_bill_emailer(Resource):
+
+    def post(self):
+        output=request.get_json()
+        output=json.loads(output)
+        result=output['result']
+        msg = Message(
+                "RAASHAN BILL TO SAINIK SCHOOL GOPALGANJ PRINCIPAL GENERATED# "+str(result['Invoice No.']),
+                sender =os.environ['SENDER'],
+                recipients = [os.environ['RECIPIENTS']]
+               )
+        msg.body = " Please see the details below."
+        msg.html = render_template("print_raashan_bill.html", result=result, image=output['session'])
+        mail.send(msg)
+
+        return jsonify({'message':'email sent'})        
+
 api.add_resource(check, '/check')
 api.add_resource(student_invoice_emailer, '/student_invoice_emailer') 
 api.add_resource(school_principal_bill_emailer, '/school_principal_bill_emailer') 
 api.add_resource(house_cover_emailer, '/house_cover_emailer') 
 api.add_resource(delete_invoice_emailer, '/delete_invoice_emailer')
 api.add_resource(update_tc_leave_status_emailer, '/update_tc_leave_status_emailer')
+api.add_resource(inventory_entry_emailer, '/inventory_entry_emailer')
+api.add_resource(inventory_view_emailer, '/inventory_view_emailer')
+api.add_resource(inventory_modify_emailer, '/inventory_modify_emailer')
 
 if __name__ == '__main__': 
   
