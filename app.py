@@ -154,15 +154,15 @@ class raashan_bill_emailer(Resource):
 
     def post(self):
         output=request.get_json()
-        output=json.loads(output)
-        result=output['result']
+        header=json.loads(output['header'])
+        items=pd.DataFrame(json.loads(output['products']))
         msg = Message(
-                "RAASHAN BILL TO SAINIK SCHOOL GOPALGANJ PRINCIPAL GENERATED# "+str(result['Invoice No.']),
+                "RAASHAN BILL TO SAINIK SCHOOL GOPALGANJ PRINCIPAL GENERATED# "+str(header['Invoice No.']),
                 sender =os.environ['SENDER'],
                 recipients = [os.environ['RECIPIENTS']]
                )
         msg.body = " Please see the details below."
-        msg.html = render_template("print_raashan_bill.html", result=result, image=output['session'])
+        msg.html = render_template("print_raashan_bill.html", result=header, items=items.to_html(classes='data', justify='center').replace('<th>','<th style = "background-color: rgb(173, 171, 171)">'), image=output['session'])
         mail.send(msg)
         return jsonify({'message':'email sent'})        
 
@@ -175,6 +175,7 @@ api.add_resource(update_tc_leave_status_emailer, '/update_tc_leave_status_emaile
 api.add_resource(inventory_entry_emailer, '/inventory_entry_emailer')
 api.add_resource(inventory_view_emailer, '/inventory_view_emailer')
 api.add_resource(inventory_modify_emailer, '/inventory_modify_emailer')
+api.add_resource(raashan_bill_emailer, '/raashan_bill_emailer')
 
 if __name__ == '__main__': 
   
